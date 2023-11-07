@@ -8,8 +8,7 @@
 
 import Bio
 from Bio import SeqIO, AlignIO, Phylo
-from Bio.Phylo.TreeConstruction import DistanceCalculator
-from Bio.Phylo.TreeConstruction import DistanceTreeConstructor
+from Bio.Phylo.TreeConstruction import DistanceCalculator, DistanceTreeConstructor
 
 #read in FASTA sequences from file ad put them in an array that can be indexed:
 
