@@ -22,28 +22,52 @@ def four_point_condition(dist_matrix): #checks if the calculated distance matrix
     #print(num_combos)
 
     #Now find all the combos of 4: https://www.geeksforgeeks.org/permutation-and-combination-in-python/
-    names = dist_matrix.names
+    names = dist_matrix.names #accession numbers
+
+    #print(names.index("NM_001081819.2"))
+
     perms = permutations(names, 4)
     combos = [] #array to hold the 210 permutations
 
     for i in list(perms): #add all permutations to a list
-        print(i)
+        #print(i)
         combos.append(i)
-    #print(combos)
+    print(combos)
 
-    for i in range(0, len(combos)): #number of possible permutations of the 10 sequences
+    for i in range(0, num_combos): #number of possible permutations of the 10 sequences
         for j in range(0, 4): #number of sequences in each permutation
-            print(combos[7][2]) #i = index of permutation sequence, j = index of specific accession # in that permutation
+            #FIX THIS!!! I know these aren't right, but I'm getting there lol
+            a = names.index(combos[i][j]) #i = index of permutation sequence, j = index of specific accession # in that permutation
+            b = names.index(combos[i][j+1])
+            c = names.index()
+            d = names.index()
+
+            #Now I need to apply the following formula
+            #max{𝑑(𝑎,𝑐)+𝑑(𝑏,𝑑),𝑑(𝑎,𝑑)+𝑑(𝑏,𝑐)}≥𝑑(𝑎,𝑏)+𝑑(𝑑,𝑐)
+            #Where a = 1, b = 2, c = 3, d = 4
+            #So when accessing these combination, need to access a positin WITHIN the list (is that possible?? idk)
+            #So like in the distance matrix, I need to access the correct values given the accession numbers in the current combo of 4
+
+            val_1 = max((dist_matrix[a, c]+ dist_matrix[b, d]), dist_matrix[a, d] + dist_matrix[b, c])
+            val_2 = dist_matrix[a, b] + dist_matrix[d, c]
+
+            if val_1 >= val_2:
+                continue
+            else:
+                print("Matrix is not additive, please start over")
+                exit()
+
+
+            #print(names.index(combos[1][j]))
             #For for example you have the first permutation: ('NM_001081819.2', 'NM_000594.4', 'NM_001003244.4', 'NM_214022.1')
             #Which is at index i = 0
             #Say you want to access the third accession # in that permutation sequence. It would be j = 2
             #So it's like a list of lists
+            #BUT, FROM THAT, you need to access the proper index in the matrix
+            #So if NM_001081819.2 is at row 9 and some other accession # at row 7, the value at the intersection is the distance b/w them
 
-    #Now I need to apply the following formula
-    #max{𝑑(𝑎,𝑐)+𝑑(𝑏,𝑑),𝑑(𝑎,𝑑)+𝑑(𝑏,𝑐)}≥𝑑(𝑎,𝑏)+𝑑(𝑑,𝑐)
-    #Where a = 1, b = 2, c = 3, d = 4
-    #So when accessing these combination, need to access a positin WITHIN the list (is that possible?? idk)
-    #So like in the distance matrix, I need to access the correct values given the accession numbers in the current combo of 4
+
+
     print(dist_matrix)
     #print(dist_matrix[3, 2])
 
@@ -61,18 +85,14 @@ def four_point_condition(dist_matrix): #checks if the calculated distance matrix
     #Which will allow for the comparison
     #And if just one value of the 210 does NOT satify the forumla, the matrix is NOT additive and the loop can stop
 
-    """for i in range(0, num_combos): #iterates 210 times
-        print(list(combos[i]))"""
-
-
-
-
 
 #read in FASTA sequences from file ad put them in an array that can be indexed:
 
 #10 FASTA sequences were aligned via the online tool MUSCLE (https://www.ebi.ac.uk/Tools/msa/muscle/)
 #The alignment file (in .clw format) is read in using AlignIO package:
-with open("msa_muscle_output.clw", "r") as msa:
+file_name = input("Enter .clw file name\n") #ex.) msa_muscle_output.clw
+
+with open(file_name, "r") as msa:
     aligned_seqs = AlignIO.read(msa, "clustal")
 
 #print(aligned_seqs)
@@ -86,13 +106,12 @@ calc = DistanceCalculator('identity') #for DNA distance calculations
 
 #Now generate the distance matrix of the aligned sequences using this distance calculator
 dist_matrix = calc.get_distance(aligned_seqs)
-four_point_condition(dist_matrix)
-#print(dist_matrix)
-
 #FIX THIS!!!! NEED TO ADD SOMETHING THAT CHECKS IF THE MATRIX SATISFIES THE FOUR-POINT-CONDITION!! need to make sure it's additive
 #If it is, continue on.
 #If not, end the program and ask user for new input
-
+#The following function does that, but needs to be COMPLETED!
+four_point_condition(dist_matrix)
+#print(dist_matrix)
 
 
 #From here, the NJ and UPGMA algorithms can be used to generate trees and compare the results
