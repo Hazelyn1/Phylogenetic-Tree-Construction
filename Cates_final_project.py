@@ -56,6 +56,7 @@ def four_point_condition(dist_matrix): #checks if the calculated distance matrix
             else:
                 print("Matrix is not additive, please start over")
                 exit()
+    print("Distance matrix satifies the four-point condition, can be represented as a tree.")
 
 
             #print(names.index(combos[1][j]))
