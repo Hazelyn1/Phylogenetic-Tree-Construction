@@ -56,6 +56,8 @@ def four_point_condition(dist_matrix): #checks if the calculated distance matrix
             else:
                 print("Matrix is not additive, please start over")
                 exit()
+     
+    #ONLY if the for loop finishes without issue:
     print("Distance matrix satifies the four-point condition, can be represented as a tree.")
 
 
@@ -75,16 +77,6 @@ def four_point_condition(dist_matrix): #checks if the calculated distance matrix
     #for example if you have the combo: ('NM_001081819.2', 'NM_000594.4', 'NM_001003244.4', 'NM_214022.1')
     #Then you have a, b, c, and d
     #So the distance between a (row 9) and c (column 7) would be at index [9, 7]
-
-
-    #So I image I would need a loop go through through all combos
-    #But I somehow need to assign a, b, c, and d in each combo and each iteration
-    max_vals = [] #empty array to store the "max" part of the above formula
-    comparison_vals = [] #empty array to store the "greater than or equal to" part of the formula
-
-    #Both arrays should have 210 values
-    #Which will allow for the comparison
-    #And if just one value of the 210 does NOT satify the forumla, the matrix is NOT additive and the loop can stop
 
 
 #read in FASTA sequences from file ad put them in an array that can be indexed:
