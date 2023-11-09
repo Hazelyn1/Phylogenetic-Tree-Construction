@@ -32,34 +32,38 @@ def four_point_condition(dist_matrix): #checks if the calculated distance matrix
     for i in list(perms): #add all permutations to a list
         #print(i)
         combos.append(i)
-    print(combos)
+    #rint(combos)
 
-    for i in range(0, num_combos): #number of possible permutations of the 10 sequences
-        for j in range(0, 4): #number of sequences in each permutation
-            #FIX THIS!!! I know these aren't right, but I'm getting there lol
-            a = names.index(combos[i][j]) #i = index of permutation sequence, j = index of specific accession # in that permutation
-            b = names.index(combos[i][j+1])
-            c = names.index()
-            d = names.index()
+    for i in range(0, num_combos): #number of possible permutations of the 10 sequences (210 total)
+        a = names.index(combos[i][0]) #i = index of permutation sequence
+        b = names.index(combos[i][1])
+        c = names.index(combos[i][2])
+        d = names.index(combos[i][3])
 
-            #Now I need to apply the following formula
-            #max{𝑑(𝑎,𝑐)+𝑑(𝑏,𝑑),𝑑(𝑎,𝑑)+𝑑(𝑏,𝑐)}≥𝑑(𝑎,𝑏)+𝑑(𝑑,𝑐)
-            #Where a = 1, b = 2, c = 3, d = 4
-            #So when accessing these combination, need to access a positin WITHIN the list (is that possible?? idk)
-            #So like in the distance matrix, I need to access the correct values given the accession numbers in the current combo of 4
+        """print(dist_matrix[a][c])
+        print(dist_matrix[b][d])
+        print(dist_matrix[a][d])
+        print(dist_matrix[b][c])
+        print(dist_matrix[a][b])
+        print(dist_matrix[d][c])"""
+        #Now I need to apply the following formula
+        #max{𝑑(𝑎,𝑐)+𝑑(𝑏,𝑑),𝑑(𝑎,𝑑)+𝑑(𝑏,𝑐)}≥𝑑(𝑎,𝑏)+𝑑(𝑑,𝑐) --> see M9 assignment & M9 notes for reference
+        #Where a = 1, b = 2, c = 3, d = 4
+        #So when accessing these combination, need to access a positin WITHIN the list (is that possible?? idk)
+        #So like in the distance matrix, I need to access the correct values given the accession numbers in the current combo of 4
 
-            val_1 = max((dist_matrix[a, c]+ dist_matrix[b, d]), dist_matrix[a, d] + dist_matrix[b, c])
-            val_2 = dist_matrix[a, b] + dist_matrix[d, c]
+        val_1 = max((round(dist_matrix[a][c], 1) + round(dist_matrix[b][d], 1), round(dist_matrix[a][d],1) + round(dist_matrix[b][c], 1)))
+        print(val_1)
+        val_2 = round(dist_matrix[a][b], 1) + round(dist_matrix[d][c], 1)
+        print(val_2)
+        if val_1 >= val_2:
+            continue
+        else:
+            print("Matrix is not additive, please start over")
+            exit()
 
-            if val_1 >= val_2:
-                continue
-            else:
-                print("Matrix is not additive, please start over")
-                exit()
-     
     #ONLY if the for loop finishes without issue:
     print("Distance matrix satifies the four-point condition, can be represented as a tree.")
-
 
             #print(names.index(combos[1][j]))
             #For for example you have the first permutation: ('NM_001081819.2', 'NM_000594.4', 'NM_001003244.4', 'NM_214022.1')
@@ -118,7 +122,3 @@ UPGMA_tree = construct.upgma(dist_matrix)
 
 #print(UPGMA_tree)
 #Phylo.draw(UPGMA_tree)
-
-
-
-
