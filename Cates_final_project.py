@@ -6,13 +6,13 @@
 #DELETE THE FOLLOWING COMMENT, ADD TO REFERENCES IN REPORT!!!!
 #Largely based on this tutorial: https://medium.com/@poudelmohit59/beginners-guide-to-phylogenetic-tree-construction-using-biopython-5accbd8345a2
 
-import math
 import Bio
 from Bio import SeqIO, AlignIO, Phylo
 from Bio.Phylo.TreeConstruction import DistanceCalculator, DistanceTreeConstructor
 
 def four_point_condition(dist_matrix): #checks if the calculated distance matrix is additive
     from itertools import permutations
+    import math
     #First, calculate how many combinations of 4 there are:
     print("Enter number of sequences:")
     n = int(input())
@@ -21,11 +21,10 @@ def four_point_condition(dist_matrix): #checks if the calculated distance matrix
     num_combos = math.comb(n, k) #https://www.w3schools.com/python/ref_math_comb.asp
     #print(num_combos)
 
-    #Now find all the combos of 4: https://www.geeksforgeeks.org/permutation-and-combination-in-python/
     names = dist_matrix.names #accession numbers
 
     #print(names.index("NM_001081819.2"))
-
+    #Now find all the combos of 4: https://www.geeksforgeeks.org/permutation-and-combination-in-python/
     perms = permutations(names, 4)
     combos = [] #array to hold the 210 permutations
 
@@ -35,17 +34,11 @@ def four_point_condition(dist_matrix): #checks if the calculated distance matrix
     #rint(combos)
 
     for i in range(0, num_combos): #number of possible permutations of the 10 sequences (210 total)
-        a = names.index(combos[i][0]) #i = index of permutation sequence
+        a = names.index(combos[i][0]) #i = index of permutation sequence with the "combos" list (it's a list of lists)
         b = names.index(combos[i][1])
         c = names.index(combos[i][2])
         d = names.index(combos[i][3])
 
-        """print(dist_matrix[a][c])
-        print(dist_matrix[b][d])
-        print(dist_matrix[a][d])
-        print(dist_matrix[b][c])
-        print(dist_matrix[a][b])
-        print(dist_matrix[d][c])"""
         #Now I need to apply the following formula
         #max{𝑑(𝑎,𝑐)+𝑑(𝑏,𝑑),𝑑(𝑎,𝑑)+𝑑(𝑏,𝑐)}≥𝑑(𝑎,𝑏)+𝑑(𝑑,𝑐) --> see M9 assignment & M9 notes for reference
         #Where a = 1, b = 2, c = 3, d = 4
@@ -58,36 +51,23 @@ def four_point_condition(dist_matrix): #checks if the calculated distance matrix
         print(val_2)
         if val_1 >= val_2:
             continue
-        else:
-            print("Matrix is not additive, please start over")
-            exit()
+        else: #matrix is not additive
+            break
 
-    #ONLY if the for loop finishes without issue:
-    print("Distance matrix satifies the four-point condition, can be represented as a tree.")
 
-            #print(names.index(combos[1][j]))
-            #For for example you have the first permutation: ('NM_001081819.2', 'NM_000594.4', 'NM_001003244.4', 'NM_214022.1')
-            #Which is at index i = 0
-            #Say you want to access the third accession # in that permutation sequence. It would be j = 2
-            #So it's like a list of lists
-            #BUT, FROM THAT, you need to access the proper index in the matrix
-            #So if NM_001081819.2 is at row 9 and some other accession # at row 7, the value at the intersection is the distance b/w them
+    #print(names.index(combos[1][j]))
+    #For for example you have the first permutation: ('NM_001081819.2', 'NM_000594.4', 'NM_001003244.4', 'NM_214022.1')
+    #Which is at index i = 0
+    #Say you want to access the third accession # in that permutation sequence. It would be j = 2
+    #So it's like a list of lists
+    #BUT, FROM THAT, you need to access the proper index in the matrix
+    #So if NM_001081819.2 is at row 9 and some other accession # at row 7, the value at the intersection is the distance b/w them
 
 
 
-    print(dist_matrix)
-    #print(dist_matrix[3, 2])
-
-    #for example if you have the combo: ('NM_001081819.2', 'NM_000594.4', 'NM_001003244.4', 'NM_214022.1')
-    #Then you have a, b, c, and d
-    #So the distance between a (row 9) and c (column 7) would be at index [9, 7]
-
-
-#read in FASTA sequences from file ad put them in an array that can be indexed:
-
-#10 FASTA sequences were aligned via the online tool MUSCLE (https://www.ebi.ac.uk/Tools/msa/muscle/)
+#FASTA sequences were aligned via the online tool MUSCLE (https://www.ebi.ac.uk/Tools/msa/muscle/)
 #The alignment file (in .clw format) is read in using AlignIO package:
-file_name = input("Enter .clw file name\n") #ex.) msa_muscle_output.clw
+file_name = input("Enter .clw file name (please include file extension in name)\n") #ex.) msa_muscle_output.clw
 
 with open(file_name, "r") as msa:
     aligned_seqs = AlignIO.read(msa, "clustal")
@@ -103,9 +83,7 @@ calc = DistanceCalculator('identity') #for DNA distance calculations
 
 #Now generate the distance matrix of the aligned sequences using this distance calculator
 dist_matrix = calc.get_distance(aligned_seqs)
-#FIX THIS!!!! NEED TO ADD SOMETHING THAT CHECKS IF THE MATRIX SATISFIES THE FOUR-POINT-CONDITION!! need to make sure it's additive
-#If it is, continue on.
-#If not, end the program and ask user for new input
+
 #The following function does that, but needs to be COMPLETED!
 four_point_condition(dist_matrix)
 #print(dist_matrix)
