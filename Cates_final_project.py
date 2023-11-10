@@ -1,7 +1,7 @@
 #Hazelyn Cates
 #Started 11/6/23
 #EN.605.651.81.FA23
-#This program constructs a phylogenetic tree using Biopython package
+#This program constructs a phylogenetic tree using Biopython
 
 #DELETE THE FOLLOWING COMMENT, ADD TO REFERENCES IN REPORT!!!!
 #Largely based on this tutorial: https://medium.com/@poudelmohit59/beginners-guide-to-phylogenetic-tree-construction-using-biopython-5accbd8345a2
@@ -13,6 +13,8 @@ from Bio.Phylo.TreeConstruction import DistanceCalculator, DistanceTreeConstruct
 def four_point_condition(dist_matrix): #checks if the calculated distance matrix is additive
     from itertools import permutations
     import math
+
+    flag = 0 #flag to keep track of if matrix is additive. 0 = not additive
     #First, calculate how many combinations of 4 there are:
     print("Enter number of sequences:")
     n = int(input())
@@ -46,14 +48,21 @@ def four_point_condition(dist_matrix): #checks if the calculated distance matrix
         #So like in the distance matrix, I need to access the correct values given the accession numbers in the current combo of 4
 
         val_1 = max((round(dist_matrix[a][c], 1) + round(dist_matrix[b][d], 1), round(dist_matrix[a][d],1) + round(dist_matrix[b][c], 1)))
-        print(val_1)
+        #print(val_1)
         val_2 = round(dist_matrix[a][b], 1) + round(dist_matrix[d][c], 1)
-        print(val_2)
-        if val_1 >= val_2:
+        #print(val_2)
+        if val_1 >= val_2: #So far, the matrix is additive
+            flag = 1
             continue
+
         else: #matrix is not additive
+            flag = 0
             break
 
+    if flag == 1:
+        print("Matrix is additive\n")
+    else:
+        print("Matrix is not additive\n")
 
     #print(names.index(combos[1][j]))
     #For for example you have the first permutation: ('NM_001081819.2', 'NM_000594.4', 'NM_001003244.4', 'NM_214022.1')
@@ -97,6 +106,55 @@ NJ_tree = construct.nj(dist_matrix)
 
 #Repeat for UPGMA method:
 UPGMA_tree = construct.upgma(dist_matrix)
-
 #print(UPGMA_tree)
+#print(UPGMA_tree.get_terminals())
+#print(UPGMA_tree.get_nonterminals())
 #Phylo.draw(UPGMA_tree)
+
+print("Print NJ tree - N\nPrint UPGMA tree - U\nPrint both trees - B")
+tree_input = str(input())
+tree_input = tree_input.upper()
+
+if tree_input == 'N': #Draw NJ tree
+    Phylo.draw(NJ_tree)
+    print("Branch lengths of terminal nodes (leaves) of NJ tree:")
+    print(NJ_tree.get_terminals())
+    print("Branch lengths of non-terminal (internal) nodes of NJ tree:")
+    print(NJ_tree.get_nonterminals())
+    print("Print UPGMA tree? Y or N")
+    ans = str(input()).upper()
+    if ans == 'Y':
+        Phylo.draw(UPGMA_tree)
+        print("Branch lengths of terminal nodes (leaves) of UPGMA tree:")
+        print(UPGMA_tree.get_terminals())
+        print("Branch lengths of non-terminal (internal) nodes of UPGMA tree:")
+        print(UPGMA_tree.get_nonterminals())
+
+elif tree_input == 'U': #Draw UPGMA tree
+    Phylo.draw(UPGMA_tree)
+    print("Branch lengths of terminal nodes (leaves) of UPGMA tree:")
+    print(UPGMA_tree.get_terminals())
+    print("Branch lengths of non-terminal (internal) nodes of UPGMA tree:")
+    print(UPGMA_tree.get_nonterminals())
+    print("Print NJ tree? Y or N")
+    ans = str(input()).upper()
+    if ans == 'Y':
+        Phylo.draw(NJ_tree)
+        print("Branch lengths of terminal nodes (leaves) of NJ tree:")
+        print(NJ_tree.get_terminals())
+        print("Branch lengths of non-terminal (internal) nodes of NJ tree:")
+        print(NJ_tree.get_nonterminals())
+
+else: #Draw both
+    Phylo.draw(NJ_tree)
+    print("Branch lengths of terminal nodes (leaves) of NJ tree:")
+    print(NJ_tree.get_terminals())
+    print("Branch lengths of non-terminal (internal) nodes of NJ tree:")
+    print(NJ_tree.get_nonterminals())
+    Phylo.draw(UPGMA_tree)
+    print("Branch lengths of terminal nodes (leaves) of UPGMA tree:")
+    print(UPGMA_tree.get_terminals())
+    print("Branch lengths of non-terminal (internal) nodes of UPGMA tree:")
+    print(UPGMA_tree.get_nonterminals())
+
+
