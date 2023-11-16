@@ -7,7 +7,7 @@
 #Largely based on this tutorial: https://medium.com/@poudelmohit59/beginners-guide-to-phylogenetic-tree-construction-using-biopython-5accbd8345a2
 
 import Bio
-from Bio import SeqIO, AlignIO, Phylo
+from Bio import AlignIO, Phylo
 from Bio.Phylo.TreeConstruction import DistanceCalculator, DistanceTreeConstructor
 
 def four_point_condition(dist_matrix): #checks if the calculated distance matrix is additive
