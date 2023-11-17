@@ -1,10 +1,7 @@
 #Hazelyn Cates
-#Started 11/6/23
+#Started 11/6/23, finished 11/16/23
 #EN.605.651.81.FA23
 #This program constructs a phylogenetic tree using Biopython
-
-#DELETE THE FOLLOWING COMMENT, ADD TO REFERENCES IN REPORT!!!!
-#Largely based on this tutorial: https://medium.com/@poudelmohit59/beginners-guide-to-phylogenetic-tree-construction-using-biopython-5accbd8345a2
 
 import Bio
 from Bio import AlignIO, Phylo
@@ -20,13 +17,13 @@ def four_point_condition(dist_matrix): #checks if the calculated distance matrix
     n = int(input())
     k = 4
 
-    num_combos = math.comb(n, k) #https://www.w3schools.com/python/ref_math_comb.asp
+    num_combos = math.comb(n, k) 
     #print(num_combos)
 
     names = dist_matrix.names #accession numbers
 
     #print(names.index("NM_001081819.2"))
-    #Now find all the combos of 4: https://www.geeksforgeeks.org/permutation-and-combination-in-python/
+    #Now find all the combos of 4:
     perms = permutations(names, 4)
     combos = [] #array to hold the 210 permutations
 
@@ -64,27 +61,12 @@ def four_point_condition(dist_matrix): #checks if the calculated distance matrix
     else:
         print("Matrix is not additive\n")
 
-    #print(names.index(combos[1][j]))
-    #For for example you have the first permutation: ('NM_001081819.2', 'NM_000594.4', 'NM_001003244.4', 'NM_214022.1')
-    #Which is at index i = 0
-    #Say you want to access the third accession # in that permutation sequence. It would be j = 2
-    #So it's like a list of lists
-    #BUT, FROM THAT, you need to access the proper index in the matrix
-    #So if NM_001081819.2 is at row 9 and some other accession # at row 7, the value at the intersection is the distance b/w them
-
-
-
 #FASTA sequences were aligned via the online tool MUSCLE (https://www.ebi.ac.uk/Tools/msa/muscle/)
 #The alignment file (in .clw format) is read in using AlignIO package:
 file_name = input("Enter .clw file name (please include file extension in name)\n") #ex.) msa_muscle_output.clw
 
 with open(file_name, "r") as msa:
     aligned_seqs = AlignIO.read(msa, "clustal")
-
-#print(aligned_seqs)
-
-#FIX THIS!!! Need to somehow change the names of each sequence b/c it's just the accession numbers rn and I have no idea which is which
-#But if I can't, I'll make sure I specify what's what in my report when I do my results section
 
 #From the alignment data, have to create a distance matrix
 #To do this, first calculate the distances between the sequences: (NOTE: I'm at part 3 in the tutorial linked above)
@@ -106,10 +88,6 @@ NJ_tree = construct.nj(dist_matrix)
 
 #Repeat for UPGMA method:
 UPGMA_tree = construct.upgma(dist_matrix)
-#print(UPGMA_tree)
-#print(UPGMA_tree.get_terminals())
-#print(UPGMA_tree.get_nonterminals())
-#Phylo.draw(UPGMA_tree)
 
 print("Print NJ tree - N\nPrint UPGMA tree - U\nPrint both trees - B")
 tree_input = str(input())
