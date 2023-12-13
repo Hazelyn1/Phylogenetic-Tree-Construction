@@ -1,4 +1,4 @@
-# Final_project
+# Phylogenetic Tree Construction
 This program constructs a UPGMA tree and NJ tree using the BioPython package. This program takes the results of a DNA multiple sequence alignment (via online tool MUSCLE, taking a text file of FASTA sequences as input, example provided as "sequences.txt") in .clw format as input, which is provided in an example file ("msa_muscle_output.clw"). The distance matrix is calculated first and then the "four_point_condition" function is called which checks if the distance matrix is additive or not by checking the following formula:
 max{𝑑(𝑎, 𝑐) + 𝑑(𝑏, 𝑑), 𝑑(𝑎, 𝑑) + 𝑑(𝑏, 𝑐)} ≥ 𝑑(𝑎, 𝑏) + 𝑑(𝑑, 𝑐)
 The results of the "four_point_condition" function do not impact tree construction since this program implements heuristic methods. 
